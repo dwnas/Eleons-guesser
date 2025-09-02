@@ -24,7 +24,7 @@
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
-        
+
         #eleon-img {
             box-shadow: 0 0 24px 3px #fff5, 0 0 48px 8px #00eaff33;
         }
@@ -162,6 +162,41 @@
         // Start the first game
         startGame();
         
+        // have an element appear above the footer when hovering over the footer. it is an iframe that i have in my clipboard
+        const footer = document.getElementById('footer');
+        const hoverDiv = document.createElement('div');
+        hoverDiv.innerHTML = `<iframe title="Discord user embed" width="340" height="72" frameborder="0" sandbox="allow-scripts" src="https://widgets.vendicated.dev/user?id=589322754470445057&theme=dark&banner=false&full-banner=false&rounded-corners=true&discord-icon=true&badges=false&guess-nitro=false&"></iframe>`;
+        footer.appendChild(hoverDiv);
+        //center the iframe and have it appear just above the footer
+        hoverDiv.style.position = 'absolute';
+        hoverDiv.style.bottom = '100%';
+        hoverDiv.style.left = '50%';
+        hoverDiv.style.transform = 'translateX(-170px)';
+        hoverDiv.style.right = '0';
+        hoverDiv.style.zIndex = '1000';
+        hoverDiv.style.display = 'none';
+        hoverDiv.style.opacity = '0';
+        hoverDiv.style.transition = 'opacity 0.5s';
+        hoverDiv.style.pointerEvents = 'none';
+
+        footer.addEventListener('mouseenter', () => {
+            hoverDiv.style.display = 'block';
+            setTimeout(() => {
+                hoverDiv.style.opacity = '0.5';
+            }, 10);
+        });
+
+        footer.addEventListener('mouseleave', () => {
+            hoverDiv.style.opacity = '0';
+            setTimeout(() => {
+                if (footer.matches(':hover')) {
+                    hoverDiv.style.display = 'block';
+                } else {
+                    hoverDiv.style.display = 'none';
+                }
+            }, 500);
+        });
+
     </script>
 </body>
 </html>
