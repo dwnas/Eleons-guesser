@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Who's That Eleon?</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #222; color: #fff; }
+        #eleon-img { width: 300px; height: 300px; margin: 20px auto; display: block; background: #444; }
+        #streak { font-size: 1.2em; margin: 10px; }
+        #guess-form input[type="text"] { font-size: 1.2em; padding: 5px; }
+        #guess-form button, #restart-btn { font-size: 1.1em; padding: 6px 16px; margin-left: 8px; }
+        #message { margin: 15px; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <h1>Who's That Eleon?</h1>
+    <div id="streak">Streak: 0</div>
+    <img id="eleon-img" src="" alt="Who's that Eleon?">
+    <form id="guess-form" autocomplete="off">
+        <input type="text" id="guess-input" placeholder="Enter Eleon name" required>
+        <button type="submit">Guess</button>
+    </form>
+    <div id="message"></div>
+    <button id="restart-btn" style="display:none;">Restart Game</button>
+
+    <script>
+        // add "second took to answer" and calculate wpm based off of that and length of the name (taking the usual idea that 5chars = avg 1word)
+        // insert this into the page and show it when one is guessed correctly
+        function displayWPM(fauxSeconds, seconds, word) {
+            const wpm = calculateWPM(seconds, word);
+            const typingWpm = calculateWPM(fauxSeconds, word);
+            seconds = seconds.toFixed(1);
+            messageDiv.innerHTML += `<br>${seconds}s - ${wpm}wpm. (${typingWpm}wpm)`;
+        }
+        function calculateWPM(seconds, word) {
+            const words = word.length / 5;
+            const minutes = seconds / 60;
+            return Math.round(words / minutes);
+        }
+
+        const eleons = [
+            "Bastolith", "Boogihop", "Cerberio", "Freever", "Heirite", "Igniram", "Jestigator",
+            "Lunalis", "Lurmaw", "Morfur", "Pyurnace", "Syrinfly"
+        ];
+
+        let currentEleon = "";
+        let streak = 0;
+        let gameActive = true;
+        var startTime
+        var endTime
+        var typingStartTime
+
+        const eleonImg = document.getElementById('eleon-img');
+        const streakDiv = document.getElementById('streak');
+        const guessForm = document.getElementById('guess-form');
+        const guessInput = document.getElementById('guess-input');
+        const messageDiv = document.getElementById('message');
+        const restartBtn = document.getElementById('restart-btn');
+
+        function pickRandomEleon() {
+            return eleons[Math.floor(Math.random() * eleons.length)];
+        }
+
+        function showOutline(eleon) {
+            eleonImg.src = `/images/eleon/${eleon}.jpg`;
+            eleonImg.alt = "Who's that Eleon?";
+        }
+
+        function showFull(eleon) {
+            eleonImg.src = `/images/eleon/${eleon}.gif`;
+            eleonImg.alt = eleon;
+        }
+
+        function startGame() {
+            gameActive = true;
+            messageDiv.textContent = "";
+            restartBtn.style.display = "none";
+            guessInput.value = "";
+            guessInput.disabled = false;
+            guessInput.focus();
+            currentEleon = pickRandomEleon();
+            showOutline(currentEleon);
+            startTime = Date.now();
+        }
+
+        guessForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!gameActive) return;
+            const guess = guessInput.value.trim().toLowerCase();
+            if (guess === currentEleon.toLowerCase()) {
+                
+
+                endTime = Date.now();
+                let seconds = (endTime - startTime) / 1000;
+                let typingSeconds = (endTime - typingStartTime) / 1000;
+                streak++;
+                streakDiv.textContent = `Streak: ${streak}`;
+                showFull(currentEleon);
+                messageDiv.textContent = "Correct! Next Eleon...";
+                displayWPM(typingSeconds, seconds-0.2, currentEleon);
+                
+
+                gameActive = false;
+                guessInput.disabled = true;
+                setTimeout(() => {
+                    startGame();
+                    typingStartTime = undefined;
+                }, 2000);
+            } else {
+                typingStartTime = undefined;
+                gameActive = false;
+                showFull(currentEleon);
+                messageDiv.textContent = `Game Over! The Eleon was "${currentEleon}". Your streak was ${streak}.`;
+                streak = 0;
+                streakDiv.textContent = `Streak: 0`;
+                guessInput.disabled = true;
+                restartBtn.style.display = "inline-block";
+            }
+        });
+
+        restartBtn.addEventListener('click', function() {
+            streak = 0;
+            streakDiv.textContent = `Streak: 0`;
+            startGame();
+        });
+
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && restartBtn.style.display === "inline-block") {
+                restartBtn.click();
+            }
+        });
+
+        guessInput.addEventListener('input', function() {
+            if (!typingStartTime && gameActive && !(guessInput.value.trim() === "")) {
+                typingStartTime = Date.now();
+            }
+        });
+
+        // Start the first game
+        startGame();
+        
+    </script>
+</body>
+</html>
