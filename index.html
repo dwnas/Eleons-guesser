@@ -10,6 +10,7 @@
         #guess-form input[type="text"] { font-size: 1.2em; padding: 5px; }
         #guess-form button, #restart-btn { font-size: 1.1em; padding: 6px 16px; margin-left: 8px; }
         #message { margin: 15px; font-size: 1.1em; }
+        #footer { margin-top: 20px; font-size: 0.8em; color: #aaa; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); }
     </style>
 </head>
 <body>
@@ -22,7 +23,7 @@
     </form>
     <div id="message"></div>
     <button id="restart-btn" style="display:none;">Restart Game</button>
-
+    <div id="footer">by <a href="https://discord.com/users/589322754470445057" target="_blank">dawns</a> (id: 589322754470445057)</div>
     <script>
         function displayWPM(fauxSeconds, seconds, word) {
             const wpm = calculateWPM(seconds, word);
