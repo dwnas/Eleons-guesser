@@ -134,7 +134,9 @@
                 typingStartTime = Date.now();
             }
         });
-
+        guessInput.addEventListener('paste', function(event) {
+            event.preventDefault();
+        });
         // Start the first game
         startGame();
         
