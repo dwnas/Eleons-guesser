@@ -24,8 +24,6 @@
     <button id="restart-btn" style="display:none;">Restart Game</button>
 
     <script>
-        // add "second took to answer" and calculate wpm based off of that and length of the name (taking the usual idea that 5chars = avg 1word)
-        // insert this into the page and show it when one is guessed correctly
         function displayWPM(fauxSeconds, seconds, word) {
             const wpm = calculateWPM(seconds, word);
             const typingWpm = calculateWPM(fauxSeconds, word);
