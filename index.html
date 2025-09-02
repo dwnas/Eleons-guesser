@@ -63,6 +63,19 @@
             "Bastolith", "Boogihop", "Cerberio", "Freever", "Heirite", "Igniram", "Jestigator",
             "Lunalis", "Lurmaw", "Morfur", "Pyurnace", "Syrinfly"
         ];
+        const eleonImages = {};
+        eleons.forEach(eleon => {
+            const img = new Image();
+            img.src = `/images/eleon/${eleon}.gif`;
+            eleonImages[eleon] = img;
+            delete img;
+        });
+        eleons.forEach(eleon => {
+            const img = new Image();
+            img.src = `/images/eleon/${eleon}.jpg`;
+            eleonImages[eleon] = img;
+            delete img;
+        });
 
         let currentEleon = "";
         let streak = 0;
