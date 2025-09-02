@@ -64,7 +64,8 @@
             "Lunalis", "Lurmaw", "Morfur", "Pyurnace", "Syrinfly"
         ];
         const eleonImages = {};
-        eleons.forEach(eleon => {
+        setTimeout(() => {
+            eleons.forEach(eleon => {
             const img = new Image();
             img.src = `/images/eleon/${eleon}.gif`;
             eleonImages[eleon] = img;
@@ -76,6 +77,8 @@
             eleonImages[eleon] = img;
             delete img;
         });
+        }, 1000);
+        
 
         let currentEleon = "";
         let streak = 0;
